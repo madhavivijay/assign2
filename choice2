@@ -1,7 +1,7 @@
 pipeline {
     agent none 
     parameters {
-        choice(choices: ['main', 'master'], description: 'choose the branch', name: 'branch')
+        choice(choices: ['master', 'cslave', 'jslave'], description: 'choose the label', name: 'label')
         }
     stages {
         stage('build') {
