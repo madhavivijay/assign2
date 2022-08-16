@@ -1,0 +1,47 @@
+pipeline {
+    agent none 
+    parameters {
+        choice(choices: ['main', 'master'], description: 'choose the branch', name: 'branch')
+        }
+    stages {
+        stage('build') {
+            agent { label 'jslave' }
+            steps {
+                    echo "build"
+            }
+        }
+        stage('deploy') {
+            agent { label 'cslave' } 
+            steps {
+                sh '''
+                    echo "deploy"
+                    sleep 5
+                    '''
+            }
+        }
+        stage('test') {
+                   script {
+                        if (params.branch == 'master') 
+                        {
+                        parallel {
+                        stage('test1') {
+                        agent { label 'master' } 
+                             steps {
+                                sh 'echo "test1"'
+                    }
+                }
+                stage('test2') {
+                    agent { label 'master' } 
+                    steps {
+                        sh 'echo "test2"'
+                    }
+                } 
+                }
+                else {
+                    echo "this is not master branch"
+                 }
+            }   
+        }    
+    }
+}
+}
