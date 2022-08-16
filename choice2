@@ -36,7 +36,6 @@ pipeline {
                         sh 'echo "test2"'
                     }
                 } 
-                }
                 else {
                     echo "this is not master branch"
                  }
